@@ -85,6 +85,12 @@
               "src/styles.css"
             ]
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "buildTarget": "prueba_enthec:build:production"
+          }
         }
       }
     }
