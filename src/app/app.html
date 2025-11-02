@@ -1,74 +1,67 @@
 
-<h1>Enthec recruiting App</h1>
+<div class="header">
+  <h1>Buscador de repositorios de usuarios de Github</h1>
+</div>
 
 <div class="search-bar-container">
-      <input  [(ngModel)]="username" type="text" placeholder="Search users..." />
-      <button (click)="searchUserRepos(username)">Search</button>
-</div>
-<div class="user">
-  <img [src]="user?.avatar_url" alt="User Avatar" width="100" height="100" />
-  <h2>{{ user?.login }}</h2>
-</div>
-<div class="results-container">
-  <div class="filters-container">
-    <div class="status-filter-container">
-      <label for="status-filter">Status:</label>
-      <select id="status-filter" name="status-filter">
-        <option value="all">All</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-      </select>
-    </div>
+  <div class="title">
+    <h2>Buscar usuarios: </h2>
   </div>
+  <div class="search-bar">
+    <input  [(ngModel)]="username" type="text" placeholder="Search users..." />
+    <button (click)="searchUserRepos(username)">Search</button>
+  </div>
+</div>
+
+<div class="user-container">
+  <div class="title">
+    <h2>Información del usuario:</h2>
+  </div>
+  <div class="user-info">
+    <img [src]="user?.avatar_url" alt="User Avatar" width="100" height="100" />
+    <h2>{{ user?.login | uppercase }}</h2>
+  </div>
+</div>
+
+<div class="results-container">
+  <div class="filters">
+    <app-filters 
+      [reposLanguajes]="reposLanguajes"
+      (languageFilterChange)="filterByLanguage($event)"
+      (repoNameChange)="filterByName($event)"
+    ></app-filters>
+  </div>
+
   <div class="results-main-container">
-    <div class="order-filter-container">
-      <label for="order-filter">Order by:</label>
-      <select id="order-filter" name="order-filter">
-        <option value="name-asc">Name (A-Z)</option>
-        <option value="name-desc">Name (Z-A)</option>
-        <option value="age-asc">Age (Youngest to Oldest)</option>
-        <option value="age-desc">Age (Oldest to Youngest)</option>
-      </select>
+    <div class="results-container-title">
+      <h2>Resultados de la búsqueda:</h2>
     </div>
+
+    <div class="order-filters-container">
+       <app-order-filters
+        (nameOrderChange)="orderByName($event)"
+        (starsOrderChange)="orderByStars($event)"
+        (resetOrdersEvent)="resetFilters()" 
+      ></app-order-filters>
+    </div>
+
     <div class="results-list-container">
       <div class="card-grid">
-        <ng-container *ngFor="let repo of userRepos">
-          <div class="card">
-            <div class= "repo-name">
-              <h2 class="title">Repo Name: </h2>
-              <p>{{ repo.name }}</p>
-            </div>
-        
-            <div class="repo-data">
-              <div class="repo-description">
-                <h3 class="title">Repo description: </h3>
-                <p>{{ repo.description }}</p>
-              </div>
-              <div class="repo-link">
-                <h3 class="title">Repos URL: </h3>
-                <a href="{{repo.clone_url}}">{{repo.clone_url}}</a>
-              </div>
-              <div class="repo-language">
-                <h3 class="title">Repo Language: </h3>
-                <p>{{ repo.language }}</p>
-              </div>
-              <div class="repo-stars">
-                <h3 class="title">Repo Stars: </h3>
-                <p>{{ repo.stargazers_count }}</p>
-              </div>
-            </div>
-          </div>
-        </ng-container>
+        @for (repo of userRepos; track repo.id) {
+          <app-card [repo]="repo"></app-card>
+        }
       </div>
+
       <div class="results-paginator-container">
         <button (click)="previousPage()"><</button>
         <span>Página {{ currentPageNumber }} de {{totalPages}}</span>
         <button (click)="nextPage()">></button>
       </div>
+
     </div>
   </div>
 </div>
 
 <footer>
-  <p>© 2024 Enthec App. All rights reserved.</p>
+  <p>© 2025 Sergio Herrero Borao. Prueba técnica Enthec.</p>
 </footer>

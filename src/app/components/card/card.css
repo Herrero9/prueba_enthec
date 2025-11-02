@@ -1,0 +1,19 @@
+.card {
+  height: 480px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+}
+
+.repo-link a {
+  display: flex;
+  color: #007BFF;
+  text-decoration: none;
+  overflow: hidden;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
