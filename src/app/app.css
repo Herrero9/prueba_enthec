@@ -164,3 +164,20 @@ footer {
       font-weight: bolder;
   }
 }
+
+
+@media screen and (max-width: 768px) {
+  .results-container {
+    flex-direction: column;
+
+    .filters, .results-main-container {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .results-main-container {
+      margin-top: 20px;
+    }
+  }
+  
+}
