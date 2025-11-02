@@ -5,30 +5,56 @@
       <input  [(ngModel)]="username" type="text" placeholder="Search users..." />
       <button (click)="searchUserRepos(username)">Search</button>
 </div>
-<div class="user">
+<div class="user-container">
   <img [src]="user?.avatar_url" alt="User Avatar" width="100" height="100" />
-  <h2>{{ user?.login }}</h2>
+  <h2>{{ user?.login | uppercase }}</h2>
 </div>
 <div class="results-container">
   <div class="filters-container">
     <div class="status-filter-container">
-      <label for="status-filter">Status:</label>
-      <select id="status-filter" name="status-filter">
-        <option value="all">All</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
-      </select>
+      <label for="status-filter">Filtros:</label>
+      <div class="search-bar-container">
+        <input  [(ngModel)]="repoName" type="text" placeholder="Search repos..." (keyup.enter)="filterByName()"/>
+      </div>
+      <div class="status-filter-container">
+        <div>
+          <input type="radio" id="all" name="languajes" value="all" (change)="filterByLanguage('all')" checked/>
+          <label for="all">Todos</label>
+        </div>
+        <ng-container *ngFor="let language of reposLanguajes">
+          <div class="languajes-selector">
+            <input 
+              type="radio" 
+              id="{{language}}" 
+              name="languajes" 
+              value="{{language}}"
+              (change)="filterByLanguage(language)"
+            />
+            <label for="{{language}}">{{language}}</label>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
   <div class="results-main-container">
     <div class="order-filter-container">
-      <label for="order-filter">Order by:</label>
-      <select id="order-filter" name="order-filter">
-        <option value="name-asc">Name (A-Z)</option>
-        <option value="name-desc">Name (Z-A)</option>
-        <option value="age-asc">Age (Youngest to Oldest)</option>
-        <option value="age-desc">Age (Oldest to Youngest)</option>
-      </select>
+      <label for="order-filter">Ordenar por:</label>
+      <div class="name-filter-container">
+        <select id="name-order-filter" name="name-order-filter" (change)="orderByName($event)">
+          <option value="name-asc">Nombre (A-Z)</option>
+          <option value="name-desc">Nombre (Z-A)</option>
+        </select>
+      </div>
+      <div class="star-filter-container">
+        <select name="stars-order-filter" id="stars-order-filter" (change)="orderByStars($event)">
+          <option value="stars-asc">Estrellas (Ascendente)</option>
+          <option value="stars-desc">Estrellas (Descendente)</option>
+        </select>
+      </div>
+
+      <div class="reset-filters-button">
+        <button (click)="resetFilters()">Quitar filtros</button>
+      </div>
     </div>
     <div class="results-list-container">
       <div class="card-grid">
