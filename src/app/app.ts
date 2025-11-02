@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
-import { AppService } from './app-service';
-import { Repository, User } from './users.interface';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { Repository, User } from './interfaces/app.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AppService } from './services/app-service';
+import { Card } from './components/card/card';
+import { Filters } from './components/filters/filters';
+import { OrderFilters } from './components/order-filters/order-filters';
 
 const PAGE_SIZE = 6;
 const FIRST_PAGE = 1;
@@ -13,7 +17,10 @@ const MAGIC_NUMBER_N_0 = 0;
   selector: 'app-root',
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    Card,
+    Filters,
+    OrderFilters
   ],
   providers: [
     AppService
@@ -27,6 +34,8 @@ export class App {
 
   private repos: Repository[] = [];
   private unfilteredRepos: Repository[] = [];
+
+  private destroyRef = inject(DestroyRef);
 
   public username: string = '';
   public repoName: string = '';
@@ -64,13 +73,13 @@ export class App {
     this.setUserReposPage(this.repos);
   }
 
-  public filterByName() {
-    if(!this.repoName) {
+  public filterByName(event: string) {
+    if(!event) {
       this.currentPageNumber = FIRST_PAGE;
       this.setUserReposPage(this.repos);
       return;
     }
-    this.userRepos = this.repos.filter(repo => repo.name.toLowerCase().includes(this.repoName.toLowerCase()));
+    this.userRepos = this.repos.filter(repo => repo.name.toLowerCase().includes(event.toLowerCase()));
     this.currentPageNumber = FIRST_PAGE;
     this.setUserReposPage(this.userRepos);
   }
@@ -87,9 +96,13 @@ export class App {
     this.setUserReposPage(this.userRepos);
   }
 
-  public orderByName($event: any) {
-    console.log('Ordering by name:', $event);
-    const order = $event.target.value;
+  public orderByName(order: string) {
+    
+    if(order === '') {
+      this.resetFilters();
+      return;
+    }
+
     if(order === 'name-asc') {
       this.repos.sort((a, b) => a.name.localeCompare(b.name));
     } else if(order === 'name-desc') {
@@ -98,9 +111,12 @@ export class App {
     this.setUserReposPage(this.repos);
   }
 
-  public orderByStars($event: any) {
-    console.log('Ordering by stars:', $event);
-    const order = $event.target.value;
+  public orderByStars(order: string) {
+    if(order === '') {
+      this.resetFilters();
+      return;
+    }
+
     if(order === 'stars-asc') {
       this.repos.sort((a, b) => a.stargazers_count - b.stargazers_count);
     } else if(order === 'stars-desc') {
@@ -110,15 +126,18 @@ export class App {
   }
 
   public resetFilters() {
-    console.log('Resetting filters');
     this.repoName = '';
+    this.nameOrder = '';
+    this.starsOrder = '';
     this.currentPageNumber = FIRST_PAGE;
-    this.repos = this.unfilteredRepos;
+    this.repos = [...this.unfilteredRepos];
     this.setUserReposPage(this.repos);
   }
 
   private getUserData(username: string) {
-    this.appService.getUserRepos(username).subscribe(repos => {
+    this.appService.getUserRepos(username)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(repos => {
         this.repos = repos;
         this.unfilteredRepos = [...repos];
         this.user = this.repos[MAGIC_NUMBER_N_0]?.owner ?? null;
@@ -136,6 +155,7 @@ export class App {
   }
 
   private setReposLanguageFilter() {
+    this.reposLanguajes = [];
       this.repos.forEach(repo => {
         if(repo.language && !this.reposLanguajes.includes(repo.language)) {
           this.reposLanguajes.push(repo.language);

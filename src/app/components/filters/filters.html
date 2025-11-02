@@ -1,0 +1,26 @@
+<div class="filters-container">
+  <div class="status-filter-container">
+    <label for="status-filter">Filtros:</label>
+    <div class="search-bar-container">
+      <input  [(ngModel)]="repoName" type="text" placeholder="Search repos..." (keyup.enter)="onRepoNameChange()"/>
+    </div>
+    <div class="status-filter-container">
+      <div>
+        <input type="radio" id="all" name="languajes" value="all" (change)="onLanguageChange('all')" checked/>
+        <label for="all">Todos</label>
+      </div>
+      @for (language of reposLanguajes; track $index) {
+        <div class="languajes-selector">
+          <input 
+            type="radio" 
+            id="{{language}}" 
+            name="languajes" 
+            value="{{language}}"
+            (change)="onLanguageChange(language)"
+          />
+          <label for="{{language}}">{{language}}</label>
+        </div>
+      }
+    </div>
+  </div>
+</div>

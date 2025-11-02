@@ -1,0 +1,20 @@
+<div class="order-filter-container">
+  <label for="order-filter">Ordenar por:</label>
+  <div class="name-filter-container">
+    <select id="name-order-filter" name="name-order-filter" class="name-order-filter" [(ngModel)]="nameOrder" (change)="onNameOrderChange()">
+      <option value="">Nombre</option>
+      <option value="name-asc">Nombre (A-Z)</option>
+      <option value="name-desc">Nombre (Z-A)</option>
+    </select>
+  </div>
+  <div class="star-filter-container">
+    <select name="stars-order-filter" id="stars-order-filter" class="stars-filter-order" [(ngModel)]="starsOrder" (change)="onStarsOrderChange()">
+      <option value="">Estrellas</option>
+      <option value="stars-asc">Estrellas (Ascendente)</option>
+      <option value="stars-desc">Estrellas (Descendente)</option>
+    </select>
+  </div>
+  <div class="reset-filters-button">
+    <button (click)="resetOrders()">Quitar filtros</button>
+  </div>
+</div>

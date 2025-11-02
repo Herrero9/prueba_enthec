@@ -2,95 +2,44 @@
 <h1>Enthec recruiting App</h1>
 
 <div class="search-bar-container">
-      <input  [(ngModel)]="username" type="text" placeholder="Search users..." />
-      <button (click)="searchUserRepos(username)">Search</button>
+  <input  [(ngModel)]="username" type="text" placeholder="Search users..." />
+  <button (click)="searchUserRepos(username)">Search</button>
 </div>
+
 <div class="user-container">
   <img [src]="user?.avatar_url" alt="User Avatar" width="100" height="100" />
   <h2>{{ user?.login | uppercase }}</h2>
 </div>
-<div class="results-container">
-  <div class="filters-container">
-    <div class="status-filter-container">
-      <label for="status-filter">Filtros:</label>
-      <div class="search-bar-container">
-        <input  [(ngModel)]="repoName" type="text" placeholder="Search repos..." (keyup.enter)="filterByName()"/>
-      </div>
-      <div class="status-filter-container">
-        <div>
-          <input type="radio" id="all" name="languajes" value="all" (change)="filterByLanguage('all')" checked/>
-          <label for="all">Todos</label>
-        </div>
-        <ng-container *ngFor="let language of reposLanguajes">
-          <div class="languajes-selector">
-            <input 
-              type="radio" 
-              id="{{language}}" 
-              name="languajes" 
-              value="{{language}}"
-              (change)="filterByLanguage(language)"
-            />
-            <label for="{{language}}">{{language}}</label>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-  <div class="results-main-container">
-    <div class="order-filter-container">
-      <label for="order-filter">Ordenar por:</label>
-      <div class="name-filter-container">
-        <select id="name-order-filter" name="name-order-filter" (change)="orderByName($event)">
-          <option value="name-asc">Nombre (A-Z)</option>
-          <option value="name-desc">Nombre (Z-A)</option>
-        </select>
-      </div>
-      <div class="star-filter-container">
-        <select name="stars-order-filter" id="stars-order-filter" (change)="orderByStars($event)">
-          <option value="stars-asc">Estrellas (Ascendente)</option>
-          <option value="stars-desc">Estrellas (Descendente)</option>
-        </select>
-      </div>
 
-      <div class="reset-filters-button">
-        <button (click)="resetFilters()">Quitar filtros</button>
-      </div>
-    </div>
+<div class="results-container">
+
+  <app-filters 
+    [reposLanguajes]="reposLanguajes"
+    (languageFilterChange)="filterByLanguage($event)"
+    (repoNameChange)="filterByName($event)"
+  ></app-filters>
+
+  <div class="results-main-container">
+
+    <app-order-filters
+      (nameOrderChange)="orderByName($event)"
+      (starsOrderChange)="orderByStars($event)"
+      (resetOrdersEvent)="resetFilters()" 
+    ></app-order-filters>
+
     <div class="results-list-container">
       <div class="card-grid">
-        <ng-container *ngFor="let repo of userRepos">
-          <div class="card">
-            <div class= "repo-name">
-              <h2 class="title">Repo Name: </h2>
-              <p>{{ repo.name }}</p>
-            </div>
-        
-            <div class="repo-data">
-              <div class="repo-description">
-                <h3 class="title">Repo description: </h3>
-                <p>{{ repo.description }}</p>
-              </div>
-              <div class="repo-link">
-                <h3 class="title">Repos URL: </h3>
-                <a href="{{repo.clone_url}}">{{repo.clone_url}}</a>
-              </div>
-              <div class="repo-language">
-                <h3 class="title">Repo Language: </h3>
-                <p>{{ repo.language }}</p>
-              </div>
-              <div class="repo-stars">
-                <h3 class="title">Repo Stars: </h3>
-                <p>{{ repo.stargazers_count }}</p>
-              </div>
-            </div>
-          </div>
-        </ng-container>
+        @for (repo of userRepos; track repo.id) {
+          <app-card [repo]="repo"></app-card>
+        }
       </div>
+
       <div class="results-paginator-container">
         <button (click)="previousPage()"><</button>
         <span>Página {{ currentPageNumber }} de {{totalPages}}</span>
         <button (click)="nextPage()">></button>
       </div>
+      
     </div>
   </div>
 </div>

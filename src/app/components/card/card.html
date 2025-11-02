@@ -1,0 +1,25 @@
+<div class="card">
+  <div class= "repo-name">
+    <h2 class="title">Repo Name: </h2>
+    <p>{{ repo.name }}</p>
+  </div>
+
+  <div class="repo-data">
+    <div class="repo-description">
+      <h3 class="title">Repo description: </h3>
+      <p>{{ repo.description }}</p>
+    </div>
+    <div class="repo-link">
+      <h3 class="title">Repos URL: </h3>
+      <a href="{{repo.clone_url}}">{{repo.clone_url}}</a>
+    </div>
+    <div class="repo-language">
+      <h3 class="title">Repo Language: </h3>
+      <p>{{ repo.language }}</p>
+    </div>
+    <div class="repo-stars">
+      <h3 class="title">Repo Stars: </h3>
+      <p>{{ repo.stargazers_count }}</p>
+    </div>
+  </div>
+</div>
