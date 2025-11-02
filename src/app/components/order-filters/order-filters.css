@@ -1,0 +1,31 @@
+.order-filter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+
+  label {
+      margin-right: 8px;
+      font-weight: bold;
+  }
+
+  select {
+      margin-right: 16px;
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  }
+
+  button {
+      padding: 6px 12px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+          background-color: #A30B0B;
+      }
+  }
+}
+

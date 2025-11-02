@@ -1,0 +1,47 @@
+.filters-container {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+
+  .language-filter-container-title {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    font-size: large;
+  }
+
+  .language-filter-container-input{
+    margin: 15px 0;
+    margin-right: 15px;
+    input {
+      width: 100%;
+      height: 50px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+  }
+
+  .language-filter-container-selector{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 10px;
+
+    .languajes-selector {
+      margin: 5px 0;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+
+      input {
+        margin-right: 5px;
+      }
+    }
+
+    .all-languages {
+      border-top: 1px solid #ccc;
+    }
+  }
+
+}
